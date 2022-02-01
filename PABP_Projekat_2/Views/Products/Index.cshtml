@@ -1,0 +1,117 @@
+﻿@model PABP_Projekat_2.Extensions.PagedList<PABP_Projekat_2.Models.Product>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<form asp-action="Create" method="get">
+    <div class="form-group">
+        <label for="SupplierId" class="control-label">Suppliers</label>
+        <select name="SupplierId" id="SupplierId" class="form-control" asp-items="ViewBag.SupplierId"></select>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Create new product for selected Supplier" class="btn btn-primary" />
+    </div>
+</form>
+@{var dummy = Model.FirstOrDefault(); }
+<table class="table table-responsive">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => dummy.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => dummy.QuantityPerUnit)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => dummy.UnitPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => dummy.UnitsInStock)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => dummy.UnitsOnOrder)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => dummy.ReorderLevel)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => dummy.Discontinued)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => dummy.Category)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => dummy.Supplier)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.QuantityPerUnit)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UnitPrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UnitsInStock)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UnitsOnOrder)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReorderLevel)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Discontinued)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category.CategoryName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Supplier.CompanyName)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ProductId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.ProductId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ProductId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<ul class="pagination justify-content-center">
+    @{
+        string prevDisabled = Model.CurrentPage == 1 ? "disabled" : "";
+        string nextDisabled = Model.LastPage == Model.CurrentPage ? "disabled" : "";
+    }
+    <li class="page-item @prevDisabled"><a class="page-link" a asp-action="Index" asp-route-pageNumber="@(Model.CurrentPage - 1)">Previous</a></li>
+    @if (string.IsNullOrEmpty(prevDisabled))
+    {
+        <li class="page-item"><a class="page-link" a asp-action="Index" asp-route-pageNumber="1">1</a></li>
+    }
+    @if (Model.CurrentPage - 1 > 1)
+    {
+        <li class="page-item disabled"><a class="page-link">...</a></li>
+    }
+    <li class="page-item active"><a class="page-link">@Model.CurrentPage<span class="sr-only">(current)</span></a></li>
+    @if (Model.LastPage - Model.CurrentPage > 1)
+    {
+        <li class="page-item disabled"><a class="page-link">...</a></li>
+    }
+    @if (string.IsNullOrEmpty(nextDisabled))
+    {
+        <li class="page-item"><a class="page-link" a asp-action="Index" asp-route-pageNumber="@(Model.LastPage)">@Model.LastPage</a></li>
+    }
+    <li class="page-item @nextDisabled"><a class="page-link" asp-action="Index" asp-route-pageNumber="@(Model.CurrentPage + 1)">Next</a></li>
+</ul>

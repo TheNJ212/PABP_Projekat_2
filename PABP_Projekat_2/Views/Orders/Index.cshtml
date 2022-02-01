@@ -1,0 +1,141 @@
+﻿@model PABP_Projekat_2.Extensions.PagedList<PABP_Projekat_2.Models.Order>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+@{var dummy = Model.FirstOrDefault(); }
+<table class="table table-responsive">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => dummy.OrderDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => dummy.RequiredDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => dummy.ShippedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => dummy.Freight)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => dummy.ShipName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => dummy.ShipAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => dummy.ShipCity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => dummy.ShipRegion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => dummy.ShipPostalCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => dummy.ShipCountry)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => dummy.Customer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => dummy.Employee)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => dummy.ShipViaNavigation)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrderDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RequiredDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ShippedDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Freight)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ShipName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ShipAddress)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ShipCity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ShipRegion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ShipPostalCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ShipCountry)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Customer.CustomerId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Employee.FirstName)
+                </td>
+                <td>
+                    @if (item.ShipViaNavigation?.CompanyName is not null)
+                    {
+                        @Html.DisplayFor(modelItem => item.ShipViaNavigation.CompanyName)
+                    }
+
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.OrderId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.OrderId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.OrderId">Delete</a>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+<ul class="pagination justify-content-center">
+    @{
+        string prevDisabled = Model.CurrentPage == 1 ? "disabled" : "";
+        string nextDisabled = Model.LastPage == Model.CurrentPage ? "disabled" : "";
+    }
+    <li class="page-item @prevDisabled"><a class="page-link" a asp-action="Index" asp-route-pageNumber="@(Model.CurrentPage - 1)">Previous</a></li>
+    @if (string.IsNullOrEmpty(prevDisabled))
+    {
+        <li class="page-item"><a class="page-link" a asp-action="Index" asp-route-pageNumber="1">1</a></li>
+    }
+    @if (Model.CurrentPage - 1 > 1)
+    {
+        <li class="page-item disabled"><a class="page-link">...</a></li>
+    }
+    <li class="page-item active"><a class="page-link">@Model.CurrentPage<span class="sr-only">(current)</span></a></li>
+    @if (Model.LastPage - Model.CurrentPage > 1)
+    {
+        <li class="page-item disabled"><a class="page-link">...</a></li>
+    }
+    @if (string.IsNullOrEmpty(nextDisabled))
+    {
+        <li class="page-item"><a class="page-link" a asp-action="Index" asp-route-pageNumber="@(Model.LastPage)">@Model.LastPage</a></li>
+    }
+    <li class="page-item @nextDisabled"><a class="page-link" asp-action="Index" asp-route-pageNumber="@(Model.CurrentPage + 1)">Next</a></li>
+</ul>
+

@@ -1,0 +1,82 @@
+﻿@model IEnumerable<PABP_Projekat_2.Models.OrderDetail>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Filter</h1>
+
+<form asp-action="Filter" method="get">
+    <div class="form-group">
+        <label for="CustomerId" class="control-label">Customer</label>
+        <select name="CustomerId" id="CustomerId" class="form-control" asp-items="ViewBag.CustomerId" onchange="window.location.href = '/Products/Filter?CustomerId='+this.value"> </select>
+    </div>
+    <div class="form-group">
+        <label for="OrderId" class="control-label">OrderId</label>
+        <select name="OrderId" id="OrderId" class="form-control" asp-items="ViewBag.OrderId" onchange="window.location.href = '/Products/Filter2?OrderId='+this.value+'&CustomerId='+getCustomer()">
+            @if((bool)TempData["showEmpty"]){
+                <option></option>
+            }
+        </select>
+    </div>
+
+</form>
+<table class="table">
+    <thead>
+
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Product.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Product.QuantityPerUnit)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UnitPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Discount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Product.Category)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Product.Supplier)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Product.ProductName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Product.QuantityPerUnit)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnitPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Discount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Product.Category.CategoryName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Product.Supplier.CompanyName)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<script>
+    function getCustomer(){ return document.getElementById("CustomerId").value; }
+</script>
